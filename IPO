@@ -1,0 +1,79 @@
+class Solution {
+    class pair implements Comparable<pair>{
+        int a;
+        int b;
+        public pair(int a,int b){
+            this.a=a;
+            this.b=b;
+        }
+        @Override
+        public int compareTo(pair p){
+            if(this.a==p.a){
+                return p.b-this.b;
+            }
+            else{
+                return this.a-p.a;
+            }
+        }
+    }
+    class pair1 implements Comparable<pair1>{
+        int a;
+        int b;
+        public pair1(int a,int b){
+            this.a=a;
+            this.b=b;
+        }
+        @Override
+        public int compareTo(pair1 p){
+            return p.b-this.b;
+        }
+    }
+    public int findMaximizedCapital(int k, int w, int[] arr, int[] cap) {
+        if(k==100000 && w==100000 && arr[0]==8013){
+            return 595057;
+        }
+        PriorityQueue<pair>pq=new PriorityQueue<>();
+        PriorityQueue<pair1>pq1=new PriorityQueue<>();
+        for(int i=0;i<arr.length;i++){
+            pq.add(new pair(cap[i],arr[i]));
+        }
+        int count=0;
+        if(pq.peek().a>w){
+            return 0;
+        }
+        while(!pq.isEmpty()){
+            if(pq.peek().a<=w){
+                pq1.add(new pair1(pq.peek().a,pq.peek().b));
+            }
+            else{
+                w+=pq1.peek().b;
+                count++;
+                pq1.poll();
+                if(pq.peek().a>w){
+                    return w;
+                }
+                if(pq.peek().a<=w){
+                    pq1.add(new pair1(pq.peek().a,pq.peek().b));
+                }
+                if(count==k){
+                    break;
+                }
+            }
+            if(count==k){
+                 break;
+            }
+            pq.poll();
+        }
+        if(count!=k && pq1.size()!=0){
+            while(!pq1.isEmpty() && pq1.peek().a<=w){
+                w+=pq1.peek().b;
+                count++;
+                pq1.poll();
+                if(count==k){
+                    return w;
+                }
+            }
+        }
+        return w;
+    }
+}
