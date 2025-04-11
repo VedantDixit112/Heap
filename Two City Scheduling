@@ -1,0 +1,17 @@
+class Solution {
+    public int twoCitySchedCost(int[][] costs) {
+        Queue<Integer>pq=new PriorityQueue<>();
+        int sum=0;
+        for(int []arr:costs){
+            sum+=arr[0];
+            pq.add(arr[0]-arr[1]);
+            while(pq.size()>costs.length/2){
+                pq.poll();
+            }
+        }
+        while(!pq.isEmpty()){
+            sum-=pq.poll();
+        }
+        return sum;
+    }
+}
